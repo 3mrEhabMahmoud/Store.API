@@ -34,13 +34,16 @@ namespace Store.Web
             builder.Services.AddScoped<IDblnitializer, Dblnitializer>();
             builder.Services.AddScoped<IUnitofWork, UnitofWork>();
             builder.Services.AddScoped<IServiceManager, ServiceManager>();
-            builder.Services.AddAutoMapper(M => M.AddProfile(new ProductProfile()));
+            builder.Services.AddAutoMapper(M => M.AddProfile(new ProductProfile(builder.Configuration)));
 
             var app = builder.Build();
 
             using var scope = app.Services.CreateScope();
             var dbInitializer = scope.ServiceProvider.GetRequiredService<IDblnitializer>();//Ask CLR to create Object from IDbInitializer
             await dbInitializer.InitializeAsync();
+
+
+            app.UseStaticFiles();
             
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
