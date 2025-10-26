@@ -1,12 +1,17 @@
 
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Internal;
+using Microsoft.Extensions.Configuration;
 using Store.Domain.Contracts;
 using Store.Persistence;
 using Store.Persistence.Data.Contexts;
 using Store.Services;
 using Store.Services.Abstractions;
 using Store.Services.Mapping.Products;
+using Store.Shard.ErrorModels;
+using Store.Web.Extensions;
+using Store.Web.Middlewares;
 using System.Threading.Tasks;
 
 namespace Store.Web
@@ -19,45 +24,15 @@ namespace Store.Web
 
             // Add services to the container.
 
-            builder.Services.AddControllers();
-            // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-            builder.Services.AddEndpointsApiExplorer();
-            builder.Services.AddSwaggerGen();
+            builder.Services.AddInfrastructureServices(builder.Configuration);
+            builder.Services.ApplicationServices(builder.Configuration);
 
+            builder.Services.RegsterAllServices(builder.Configuration);
 
-
-            builder.Services.AddDbContext<StoreDbContext>(options =>
-            {
-                options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
-            });
-
-            builder.Services.AddScoped<IDblnitializer, Dblnitializer>();
-            builder.Services.AddScoped<IUnitofWork, UnitofWork>();
-            builder.Services.AddScoped<IServiceManager, ServiceManager>();
-            builder.Services.AddAutoMapper(M => M.AddProfile(new ProductProfile(builder.Configuration)));
 
             var app = builder.Build();
 
-            using var scope = app.Services.CreateScope();
-            var dbInitializer = scope.ServiceProvider.GetRequiredService<IDblnitializer>();//Ask CLR to create Object from IDbInitializer
-            await dbInitializer.InitializeAsync();
-
-
-            app.UseStaticFiles();
-            
-            // Configure the HTTP request pipeline.
-            if (app.Environment.IsDevelopment())
-            {
-                app.UseSwagger();
-                app.UseSwaggerUI();
-            }
-
-            app.UseHttpsRedirection();
-
-            app.UseAuthorization();
-
-
-            app.MapControllers();
+            await app.ConfigureMiddlewares();
 
             app.Run();
         }
