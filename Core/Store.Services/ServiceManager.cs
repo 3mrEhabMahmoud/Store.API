@@ -11,8 +11,10 @@ using System.Threading.Tasks;
 
 namespace Store.Services
 {
-    public class ServiceManager(IUnitofWork _unitofWork, IMapper _mapper) : IServiceManager
+    public class ServiceManager(IUnitofWork _unitofWork, IMapper _mapper,IBasketRepository basketRepository) : IServiceManager
     {
         public IProductService ProductService { get; } = new ProductService(_unitofWork, _mapper);
+
+        public IBasketService BasketService { get; } = new BasketService(basketRepository, _mapper);
     }
 }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Store.Domain.Exceptions
 {
-    public class ProductNotFoundExceptions (int id) : NotFoundException($"Product With id {id} Not Found !")
+    public class BasketNotFoundExcepetion(string Id) : NotFoundException($"Basket With Id {Id} Not Found")
     {
     }
 }

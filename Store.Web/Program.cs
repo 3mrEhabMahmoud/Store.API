@@ -24,8 +24,7 @@ namespace Store.Web
 
             // Add services to the container.
 
-            builder.Services.AddInfrastructureServices(builder.Configuration);
-            builder.Services.ApplicationServices(builder.Configuration);
+
 
             builder.Services.RegsterAllServices(builder.Configuration);
 

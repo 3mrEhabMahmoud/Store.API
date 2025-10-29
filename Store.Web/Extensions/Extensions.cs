@@ -2,6 +2,11 @@
 using Store.Domain.Contracts;
 using Store.Shard.ErrorModels;
 using Store.Web.Middlewares;
+using Store.Persistence;
+using Store.Services;
+
+
+
 
 namespace Store.Web.Extensions
 {
@@ -11,11 +16,12 @@ namespace Store.Web.Extensions
         {
             services.AddBuiltInServices();
 
-            services.AddSwaggerGen();
+            services.AddSwaggerServices();
 
 
 
-        
+            services.AddInfrastructureServices(configuration);
+            services.ApplicationServices(configuration);
 
 
 
