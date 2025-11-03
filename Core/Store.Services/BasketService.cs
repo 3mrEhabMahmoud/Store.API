@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using Store.Domain.Contracts;
-using Store.Domain.Entities;
+using Store.Domain.Entities.Baskets;
 using Store.Domain.Exceptions;
 using Store.Services.Abstractions;
 using Store.Shard.Dtos;
@@ -37,5 +37,6 @@ namespace Store.Services
             return flag;
         }
 
-}
+
+    }
 }

@@ -49,6 +49,7 @@ namespace Store.Web.Middlewares
                 {
                     BadRequestException => StatusCodes.Status400BadRequest,
                     NotFoundException => StatusCodes.Status404NotFound,
+                    UnauthorizedAccessException => StatusCodes.Status401Unauthorized,
                    _ => StatusCodes.Status500InternalServerError
                 };
 

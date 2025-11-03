@@ -1,6 +1,6 @@
 ﻿using StackExchange.Redis;
 using Store.Domain.Contracts;
-using Store.Domain.Entities;
+using Store.Domain.Entities.Baskets;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -32,9 +32,9 @@ namespace Store.Persistence.Repositories
 
             return flag ? await GetBasketAsync(basket.Id) : null;
         }
-        public Task<bool?> DeleteBasketAsync(string id)
+        public async Task<bool> DeleteBasketAsync(string id)
         {
-            throw new NotImplementedException();
+            return await _database.KeyDeleteAsync(id);
         }
 
     }

@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 using StackExchange.Redis;
 using Store.Domain.Contracts;
 using Store.Persistence.Data.Contexts;
@@ -25,10 +26,16 @@ namespace Store.Persistence
                 options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"));
             });
 
+            services.AddDbContext<IdentityStoreDbContext>(option =>
+            {
+                option.UseSqlServer(configuration.GetConnectionString("IdentityConnection"));
+            });
+
             services.AddScoped<IDblnitializer, Dblnitializer>();
             services.AddScoped<IUnitofWork, UnitofWork>();
 
             services.AddScoped<IBasketRepository,BasketRepository>();
+            services.AddScoped<ICacheRepository, CacheRepository>();
             services.AddSingleton<IConnectionMultiplexer>((ServiceProvider) =>
             {
                 return ConnectionMultiplexer.Connect(configuration.GetConnectionString("Redis")!);

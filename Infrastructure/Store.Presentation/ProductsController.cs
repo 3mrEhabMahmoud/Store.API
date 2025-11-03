@@ -17,7 +17,6 @@ namespace Store.Presentation
     public class ProductsController(IServiceManager _serviceManager): ControllerBase
     {
         [HttpGet]//GET: baseUrl/api/products
-        [ProducesResponseType(StatusCodes.Status200OK,Type = typeof(PaginationResponse<PaginationResponse>))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorDetalis))]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ErrorDetalis))]
         public async Task<IActionResult> GetAllProducts([FromQuery]ProductQueryParameters parameters)
@@ -28,7 +27,6 @@ namespace Store.Presentation
         }
 
         [HttpGet("{id}")]//GET: baseUrl/api/products/5
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(PaginationResponse<PaginationResponse>))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorDetalis))]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ErrorDetalis))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorDetalis))]
@@ -41,7 +39,6 @@ namespace Store.Presentation
         }
 
         [HttpGet("brands")]//GET: baseUrl/api/products/brands
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<PaginationResponse>))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorDetalis))]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ErrorDetalis))] 
         public async Task<IActionResult> GetAllBrands()
@@ -52,7 +49,6 @@ namespace Store.Presentation
         }
 
         [HttpGet("types")]//GET: baseUrl/api/products/types
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<PaginationResponse>))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorDetalis))]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ErrorDetalis))]
         public async Task<IActionResult> GetAlltypes()

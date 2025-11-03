@@ -4,6 +4,8 @@ using Store.Shard.ErrorModels;
 using Store.Web.Middlewares;
 using Store.Persistence;
 using Store.Services;
+using Store.Domain.Entities.Identity;
+using Microsoft.AspNetCore.Identity;
 
 
 
@@ -24,8 +26,8 @@ namespace Store.Web.Extensions
             services.ApplicationServices(configuration);
 
 
-
-
+            services.AddIdentityServices();
+           
 
             services.Configure<ApiBehaviorOptions>(config =>
             {
@@ -64,6 +66,23 @@ namespace Store.Web.Extensions
 
             return services;
         }
+        private static IServiceCollection AddIdentityServices(this IServiceCollection services)
+        {
+            services.AddIdentityCore<AppUser>(Options =>
+            {
+                Options.User.RequireUniqueEmail = true;
+            }).AddRoles<IdentityRole>()
+            .AddEntityFrameworkStores<IdentityStoreDbContext>();
+            return services;
+        }
+        private static async Task<WebApplication> SeedData(this WebApplication app)
+        {
+            var scope = app.Services.CreateScope();
+            var dbInitializer = scope.ServiceProvider.GetRequiredService<IDblnitializer>(); //Ask ClR to create object from IDbInitializer
+            await dbInitializer.InitializeAsync();
+            await dbInitializer.InitialieIdentityAsync();
+            return app;
+        }
 
 
 
@@ -76,6 +95,7 @@ namespace Store.Web.Extensions
 
             app.UseMiddleware<GlobalErrorHandlingMiddleware>();
 
+            SeedData(app);
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())

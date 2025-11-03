@@ -1,4 +1,4 @@
-﻿using Store.Domain.Entities;
+﻿using Store.Domain.Entities.Baskets;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,7 +11,7 @@ namespace Store.Domain.Contracts
     {
         Task<CustomerBasket?> GetBasketAsync(string id);
         Task<CustomerBasket?> UpdateBasketAsync(CustomerBasket basket,TimeSpan? timetoLive =null);
-        Task<bool?> DeleteBasketAsync(string id);
+        Task<bool> DeleteBasketAsync(string id);
 
     }
 }

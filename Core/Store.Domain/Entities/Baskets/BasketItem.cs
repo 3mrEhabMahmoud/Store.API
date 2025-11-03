@@ -1,4 +1,4 @@
-﻿namespace Store.Domain.Entities
+﻿namespace Store.Domain.Entities.Baskets
 {
     public class BasketItem
     {
