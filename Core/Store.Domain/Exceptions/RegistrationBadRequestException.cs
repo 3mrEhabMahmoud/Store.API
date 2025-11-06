@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Store.Domain.Exceptions
 {
-    internal class RegistrationBadRequestException(List<string> errors) : BadRequestException(string.Join(",",errors))
+    public class RegistrationBadRequestException(List<string> errors) : BadRequestException(string.Join(",",errors))
     {
     }
 }

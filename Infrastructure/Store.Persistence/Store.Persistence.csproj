@@ -16,4 +16,8 @@
     <ProjectReference Include="..\..\Core\Store.Services\Store.Services.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Data\Configurations\order\" />
+  </ItemGroup>
+
 </Project>

@@ -1,11 +1,15 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Tokens;
 using Store.Domain.Contracts;
-using Store.Shard.ErrorModels;
-using Store.Web.Middlewares;
+using Store.Domain.Entities.Identity;
 using Store.Persistence;
 using Store.Services;
-using Store.Domain.Entities.Identity;
-using Microsoft.AspNetCore.Identity;
+using Store.Shard;
+using Store.Shard.ErrorModels;
+using Store.Web.Middlewares;
+using System.Text;
 
 
 
@@ -51,8 +55,37 @@ namespace Store.Web.Extensions
 
             });
 
+            services.Configure<JsonOptions>(configuration.GetSection("JwtOptions"));
+
+            services.AddAuthenticationServices(configuration);
+
+
+
             return services;
 
+        }
+        private static IServiceCollection AddAuthenticationServices(this IServiceCollection services , IConfiguration configuration)
+        {
+            var jwtoptions = configuration.GetSection("JwtOptions").Get<JwtOptions>();
+
+            services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = "Bearer";
+                options.DefaultChallengeScheme = "Bearer";
+            }).AddJwtBearer(options =>
+            {
+                options.TokenValidationParameters = new TokenValidationParameters()
+                {
+                    ValidateIssuer = true,
+                    ValidIssuer = jwtoptions.Issuer,
+                    ValidateAudience = true,
+                    ValidAudience = jwtoptions.Audience,
+                    ValidateLifetime = true,
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtoptions.SecurityKey))
+                };
+            });
+            return services;
         }
         private static IServiceCollection AddBuiltInServices(this IServiceCollection services)
         {
@@ -107,6 +140,7 @@ namespace Store.Web.Extensions
 
             app.UseHttpsRedirection();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
 

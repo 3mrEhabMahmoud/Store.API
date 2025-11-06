@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Store.Presentation.Attributes;
 using Store.Services.Abstractions;
 using Store.Shard;
 using Store.Shard.Dtos.Products;
@@ -17,6 +19,8 @@ namespace Store.Presentation
     public class ProductsController(IServiceManager _serviceManager): ControllerBase
     {
         [HttpGet]//GET: baseUrl/api/products
+        [Cache(50)]
+        [Authorize]
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorDetalis))]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ErrorDetalis))]
         public async Task<IActionResult> GetAllProducts([FromQuery]ProductQueryParameters parameters)
