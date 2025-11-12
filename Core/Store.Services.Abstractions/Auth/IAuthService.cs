@@ -11,5 +11,14 @@ namespace Store.Services.Abstractions.Auth
     {
         Task<UserResponse?> LoginAsync(LoginRequest request);
         Task<UserResponse?> RegisterAsync(RegisterRequest request);
+
+        //Check Email Exists
+        Task<bool> CheckEmailExistsAsync(string email);
+        //Get Current User
+        Task<UserResponse?> GetCurrentUserAsync(string email);
+        //Get Current User Address
+        Task<AddressDto?> GetCurrentUserAddressAsync(string email);
+        //Update Current User Address
+        Task<AddressDto?> UpdateCurrentUserAddressAsync(AddressDto request,string email);
     }
 }

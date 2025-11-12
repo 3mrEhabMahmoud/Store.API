@@ -21,12 +21,13 @@ namespace Store.Web
         public static async Task Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+  
 
             // Add services to the container.
 
 
 
-            builder.Services.RegsterAllServices(builder.Configuration);
+            builder.Services.RegisterAllServices(builder.Configuration);
 
 
             var app = builder.Build();

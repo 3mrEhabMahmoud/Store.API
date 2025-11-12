@@ -18,7 +18,7 @@ namespace Store.Web.Extensions
 {
     public static class Extensions
     {
-        public static IServiceCollection RegsterAllServices(this IServiceCollection services, IConfiguration configuration)
+        public static IServiceCollection RegisterAllServices(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddBuiltInServices();
 
@@ -27,8 +27,8 @@ namespace Store.Web.Extensions
 
 
             services.AddInfrastructureServices(configuration);
+            services.AddControllersWithViews();
             services.ApplicationServices(configuration);
-
 
             services.AddIdentityServices();
            
@@ -59,8 +59,15 @@ namespace Store.Web.Extensions
 
             services.AddAuthenticationServices(configuration);
 
+            services.AddCors(options =>
+            {
+                options.AddPolicy("AllowAll", policy =>
+                {
+                    policy.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod();
+                });
+            });
 
-
+           
             return services;
 
         }
@@ -122,13 +129,10 @@ namespace Store.Web.Extensions
 
         public static async Task<WebApplication> ConfigureMiddlewares(this WebApplication app)
         {
-            using var scope = app.Services.CreateScope();
-            var dbInitializer = scope.ServiceProvider.GetRequiredService<IDblnitializer>();//Ask CLR to create Object from IDbInitializer
-            await dbInitializer.InitializeAsync();
 
             app.UseMiddleware<GlobalErrorHandlingMiddleware>();
 
-            SeedData(app);
+            await SeedData(app);
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
@@ -142,6 +146,8 @@ namespace Store.Web.Extensions
 
             app.UseAuthentication();
             app.UseAuthorization();
+
+            app.UseCors("AllowAll");
 
 
             app.MapControllers();
