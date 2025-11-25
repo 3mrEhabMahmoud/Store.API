@@ -6,4 +6,10 @@
         PaymentSuccess =1,
         PaymentFaild =2,
     }
+    //public enum PaymentStatus
+    //{
+    //    Pending = 0,
+    //    PaymentReceived = 1,
+    //    PaymentFailed = 2
+    //}
 }

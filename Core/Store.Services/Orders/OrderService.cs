@@ -88,6 +88,7 @@ namespace Store.Services.Orders
         {
             var spec = new OrderSpecification(id, UserEmail);
             var order = await _unitofWork.GetRepository<Guid, Order>().GetAsync(spec);
+            if (order is null) throw new OrderNotFoundException(id);
             return _mapper.Map<OrderResponse>(order);
         }
 

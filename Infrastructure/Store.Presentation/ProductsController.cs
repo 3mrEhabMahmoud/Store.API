@@ -20,7 +20,7 @@ namespace Store.Presentation
     {
         [HttpGet]//GET: baseUrl/api/products
         [Cache(50)]
-        [Authorize]
+      
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorDetalis))]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ErrorDetalis))]
         public async Task<IActionResult> GetAllProducts([FromQuery]ProductQueryParameters parameters)
